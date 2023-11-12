@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Booking Appoinment App</title>
+</head>
+<body>
+    <div id="signin">
+        <form>
+            <label for="name">Username</label>
+            <input type="text" placeholder="Enter the name" name="name">
+            <label for="email">Email</label>
+            <input type="text" placeholder="Enter the email id" name="email">
+            <button>Submit</button>
+        </form>
+
+    </div>
+    <div class="list">
+        <h1>User details</h1>
+      <!-- <div class="row">
+        <h6>kfljkn</h6>
+        <h6>fkdjf</h6>
+        <button class="btn btn-danger btn-sm float-right delete">X</button>
+      </div>
+    </div> -->
+    <script crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js"></script>
+   <script>
+    let sub_btn=document.querySelector("button")
+   let list_div=document.querySelector(".list")
+
+//storing multiple user details
+let input_box=document.querySelectorAll("input")
+sub_btn.addEventListener("click",(e)=>{
+    e.preventDefault()
+       let name=e.target.parentElement.children[1].value
+   let email=e.target.parentElement.children[3].value
+   let user_details={
+    "username":name,
+    "email":email
+   }
+   //post appoinmentnt data
+   axios.post("https://crudcrud.com/api/e1cc0da82f9845f4bf0176107ce7aaf0/AppointmentDetails",user_details)
+   .then(res=>showAppointments(res.data))
+   .catch(rej=>console.log(rej))
+})
+
+//Getting appoinment data
+axios.get("https://crudcrud.com/api/e1cc0da82f9845f4bf0176107ce7aaf0/AppointmentDetails")
+.then(res=>showAppointments(res.data))
+.catch(rej=>console.log(rej))
+
+
+
+
+//displaying user details
+
+function showAppointments(data){
+    console.log(data)
+data.forEach(e => {
+    // <div class="row">
+    //     <h6>kfljkn</h6>
+    //     <h6>fkdjf</h6>
+    //     <h6>kdhk</h6>
+    //     <button class="btn btn-danger btn-sm float-right delete">X</button>
+    //<button class="btn btn-sm btn-sm float-right edit">✏️</button>
+    //   </div>
+
+    let row_div=document.createElement("div")
+    row_div.setAttribute("class","row")
+
+    let name_h6=document.createElement("h6")
+    name_h6.innerText=e.username
+
+    let email_h6=document.createElement("h6")
+    email_h6.innerText=e.email
+    let del_button=document.createElement("button")
+    del_button.setAttribute("class","btn btn-danger btn-sm float-right delete")
+    del_button.setAttribute("data",e._id)
+    del_button.innerText="X"
+    let ed_btn=document.createElement("button")
+    ed_btn.setAttribute("class","btn btn-sm btn-sm float-right edit")
+    ed_btn.innerText="✏️"
+    
+
+    row_div.append(name_h6)
+    row_div.append(email_h6)
+    row_div.append(del_button)
+    row_div.append(ed_btn)
+    list_div.append(row_div)
+
+});
+}
+
+
+//deleting user
+let delete_btn=document.querySelectorAll(".delete")
+console.log(delete_btn)
+// delete_btn.forEach((e)=>{
+//     console.log(e)
+//     e.addEventListener("click",(el)=>{
+//         let key_name=el
+//         console.log(key_name)
+        
+        
+
+//     })
+// })
+
+//Editing user
+let edit_button=document.querySelectorAll(".edit")
+
+edit_button.forEach((e)=>{
+    e.addEventListener("click",(el)=>{
+        let val=el.target.parentElement.children[0].innerText
+// el.target.parentElement.children[1].innerHTML=`<input value=${val}>`
+input_box[0].value=el.target.parentElement.children[0].innerText
+         input_box[1].value=el.target.parentElement.children[1].innerText
+         
+    })
+})
+
+</script>
+</body>
+</html>
