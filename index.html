@@ -44,15 +44,21 @@ sub_btn.addEventListener("click",(e)=>{
     "email":email
    }
    //post appoinmentnt data
-   axios.post("https://crudcrud.com/api/e1cc0da82f9845f4bf0176107ce7aaf0/AppointmentDetails",user_details)
+   axios.post("https://crudcrud.com/api/c7d0898f58344b9b90da7ef439c4ee91/AppointmentDetails",user_details)
    .then(res=>showAppointments(res.data))
    .catch(rej=>console.log(rej))
 })
 
 //Getting appoinment data
-axios.get("https://crudcrud.com/api/e1cc0da82f9845f4bf0176107ce7aaf0/AppointmentDetails")
-.then(res=>showAppointments(res.data))
+let main_data=[]
+window.addEventListener("DOMContentLoaded",()=>{
+    axios.get("https://crudcrud.com/api/c7d0898f58344b9b90da7ef439c4ee91/AppointmentDetails")
+.then(res=>showAppointments(res.data)
+)
 .catch(rej=>console.log(rej))
+
+
+})
 
 
 
@@ -84,6 +90,7 @@ data.forEach(e => {
     del_button.innerText="X"
     let ed_btn=document.createElement("button")
     ed_btn.setAttribute("class","btn btn-sm btn-sm float-right edit")
+    ed_btn.setAttribute("data",e._id)
     ed_btn.innerText="✏️"
     
 
@@ -93,36 +100,44 @@ data.forEach(e => {
     row_div.append(ed_btn)
     list_div.append(row_div)
 
-});
-}
-
-
-//deleting user
+    //deleting user
 let delete_btn=document.querySelectorAll(".delete")
 console.log(delete_btn)
-// delete_btn.forEach((e)=>{
-//     console.log(e)
-//     e.addEventListener("click",(el)=>{
-//         let key_name=el
-//         console.log(key_name)
+delete_btn.forEach((e)=>{
+    console.log(e)
+    e.addEventListener("click",(el)=>{
+        el.stopPropagation()
+        let key_name=el.target.getAttribute("data")
+        axios.delete(`https://crudcrud.com/api/c7d0898f58344b9b90da7ef439c4ee91/AppointmentDetails/${key_name}`)
+        .then(res=>console.log(res))
+        .catch(rej=>console.log(rej))
         
-        
-
-//     })
-// })
+    })
+})
 
 //Editing user
 let edit_button=document.querySelectorAll(".edit")
 
 edit_button.forEach((e)=>{
     e.addEventListener("click",(el)=>{
-        let val=el.target.parentElement.children[0].innerText
-// el.target.parentElement.children[1].innerHTML=`<input value=${val}>`
+        let val=el.target.getAttribute("data")
 input_box[0].value=el.target.parentElement.children[0].innerText
          input_box[1].value=el.target.parentElement.children[1].innerText
-         
+         axios.delete(`https://crudcrud.com/api/c7d0898f58344b9b90da7ef439c4ee91/AppointmentDetails/${val}`)
+        .then(res=>console.log(res))
+        .catch(rej=>console.log(rej))
+        
     })
 })
+
+
+});
+}
+
+
+
+
+
 
 </script>
 </body>
